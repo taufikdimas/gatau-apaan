@@ -167,12 +167,8 @@ $oldAssignees = array_map('intval', (array) old('assigned_to', []));
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const allUsers = {
-        !!json_encode($usersData) !!
-    };
-    let selectedIds = {
-        !!json_encode($oldAssignees) !!
-    };
+    const allUsers = {!! json_encode($usersData) !!};
+    let selectedIds = {!! json_encode($oldAssignees) !!};
 
     const formEl = document.getElementById('form-incident');
     const listContainer = document.getElementById('assignees-list');
