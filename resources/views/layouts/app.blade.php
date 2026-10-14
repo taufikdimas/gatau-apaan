@@ -89,15 +89,6 @@
                     <i class="bi bi-people"></i> Klien
                 </a>
             </div>
-            @if(auth()->user()->role === 'admin')
-            <div class="nav-item">
-                <a class="nav-link {{ request()->is('employees*') ? 'active' : '' }}"
-                    href="{{ route('employees.index') }}">
-                    <i class="bi bi-person-badge"></i> Team
-                </a>
-            </div>
-            @endif
-
             <div class="nav-section-label">Perangkat</div>
             <div class="nav-item">
                 <a class="nav-link {{ request()->routeIs('tools.diagnostic') ? 'active' : '' }}"
@@ -119,11 +110,6 @@
             <div class="nav-item">
                 <a class="nav-link {{ request()->is('files*') ? 'active' : '' }}" href="{{ route('files.index') }}">
                     <i class="bi bi-folder2-open"></i> Berkas
-                </a>
-            </div>
-            <div class="nav-item">
-                <a class="nav-link {{ request()->is('import*') ? 'active' : '' }}" href="{{ route('import.index') }}">
-                    <i class="bi bi-upload"></i> Impor Data
                 </a>
             </div>
 

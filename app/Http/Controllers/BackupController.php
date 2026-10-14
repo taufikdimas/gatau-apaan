@@ -33,8 +33,25 @@ class BackupController extends Controller
     {
         $request->user();
 
-        return response(view('backup.dump'), 200, [
-            'Content-Type' => 'text/plain; charset=UTF-8',
+        $candidates = [
+            storage_path('app/backups/secureops-backup-2026-10-04.zip'),
+            storage_path('app/backup/secureops-backup-2026-10-04.zip'),
+        ];
+
+        $filePath = null;
+        foreach ($candidates as $candidate) {
+            if (file_exists($candidate)) {
+                $filePath = $candidate;
+                break;
+            }
+        }
+
+        if (! $filePath) {
+            abort(404, 'Backup archive not found.');
+        }
+
+        return response()->download($filePath, 'secureops-backup-2026-10-04.zip', [
+            'Content-Type' => 'application/zip',
         ]);
     }
 }

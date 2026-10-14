@@ -90,11 +90,6 @@ class User extends Authenticatable
         return $this->belongsTo(Client::class, 'client_id');
     }
 
-    public function employee(): \Illuminate\Database\Eloquent\Relations\HasOne
-    {
-        return $this->hasOne(Employee::class, 'email', 'email');
-    }
-
     public function getAvatarUrlAttribute(): string
     {
         if ($this->avatar) {
@@ -102,14 +97,6 @@ class User extends Authenticatable
                 return $this->avatar;
             }
             return asset('storage/' . $this->avatar);
-        }
-
-        $emp = $this->employee;
-        if ($emp && $emp->photo) {
-            if (str_starts_with($emp->photo, 'http://') || str_starts_with($emp->photo, 'https://')) {
-                return $emp->photo;
-            }
-            return asset('storage/' . $emp->photo);
         }
 
         $bg = match($this->role) {

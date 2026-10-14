@@ -11,7 +11,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FileViewController;
-use App\Http\Controllers\ImportController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ConfigController as AdminConfigController;
 use App\Http\Controllers\Admin\AdminUserController;
@@ -19,7 +18,6 @@ use App\Http\Controllers\Admin\AdminFileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientPortal\ClientPortalController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\VulnDbController;
 use App\Http\Controllers\PentestEngagementController;
 use App\Http\Controllers\PentestFindingController;
@@ -99,9 +97,6 @@ Route::middleware(['auth', 'prefs', 'internal:dashboard,logout'])->group(functio
     // Clients CRUD
     Route::resource('clients', ClientController::class);
 
-    // Employees CRUD (Khusus Administrator)
-    Route::resource('employees', EmployeeController::class)->middleware('role:admin');
-
     // Vulnerability Database CRUD
     Route::resource('vulndb', VulnDbController::class)->parameters(['vulndb' => 'vuln']);
 
@@ -128,10 +123,6 @@ Route::middleware(['auth', 'prefs', 'internal:dashboard,logout'])->group(functio
 
     // File Viewer
     Route::get('/files/{file}/view', [FileViewController::class, 'view'])->name('files.view');
-
-    // Import
-    Route::get('/import', [ImportController::class, 'index'])->name('import.index');
-    Route::post('/import/users', [ImportController::class, 'importUsers'])->name('import.users');
 
     // Pentest Engagements, Reports, and Findings
     Route::prefix('pentest')->name('pentest.')->group(function () {
