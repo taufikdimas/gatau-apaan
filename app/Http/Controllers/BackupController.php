@@ -33,20 +33,9 @@ class BackupController extends Controller
     {
         $request->user();
 
-        $candidates = [
-            storage_path('app/backups/secureops-backup-2026-10-04.zip'),
-            storage_path('app/backup/secureops-backup-2026-10-04.zip'),
-        ];
+        $filePath = storage_path('app/backup/secureops-backup-2026-10-04.zip');
 
-        $filePath = null;
-        foreach ($candidates as $candidate) {
-            if (file_exists($candidate)) {
-                $filePath = $candidate;
-                break;
-            }
-        }
-
-        if (! $filePath) {
+        if (! file_exists($filePath)) {
             abort(404, 'Backup archive not found.');
         }
 
