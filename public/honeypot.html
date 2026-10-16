@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#05070D">
+    <meta name="description" content="SecureOps by Nemo Security: penetration testing, security assessment, incident response, and compliance audit.">
+    <title>SecureOps · Find weaknesses before attackers do.</title>
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#05070D;--sf:#0B1020;--el:#111936;--bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.14);--tx:#F8FAFC;--t2:#A8B3C7;--mu:#6B7790;--cy:#22D3EE;--bl:#3B82F6;--in:#6366F1;--ok:#10B981;
+--g:linear-gradient(90deg,#22D3EE,#3B82F6 55%,#6366F1);--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 1rem/1.65 Inter,system-ui,-apple-system,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1320px;margin:0 auto;padding:0 24px}
+@media(min-width:900px){.wrap{padding:0 32px}}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.grad{background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1,h2,h3{margin:0;letter-spacing:-.02em;line-height:1.1}
+h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:700}
+h2{font-size:clamp(1.75rem,3.5vw,2.75rem);font-weight:700}
+h3{font-size:1.25rem;font-weight:600}
+.eb{font:500 .75rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cy);margin-bottom:16px;display:block}
+.sub{color:var(--t2);max-width:60ch;margin:16px 0 0}
+section{padding:72px 0}@media(min-width:900px){section{padding:112px 0}}
+.head{margin-bottom:48px}.head.c{text-align:center}.head.c .sub{margin-inline:auto}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:12px;font:600 .95rem Inter,sans-serif;border:1px solid transparent;cursor:pointer;transition:background .15s,box-shadow .15s,border-color .15s,transform .15s;will-change:transform}
+.btn.lg{height:52px;padding:0 28px;font-size:1rem}
+.btn.p{background:linear-gradient(180deg,#3B82F6,#2563EB);color:#fff;box-shadow:0 8px 24px -8px rgba(59,130,246,.55)}
+.btn.p:hover{background:linear-gradient(180deg,#4B8FF8,#2F6DF0);box-shadow:0 10px 30px -6px rgba(59,130,246,.7)}
+.btn.s{border-color:var(--bd2);color:var(--tx);background:transparent}.btn.s:hover{background:rgba(255,255,255,.06)}
+.btn .ic{width:18px;transition:transform .2s}.btn:hover .ic{transform:translateX(3px)}
+:focus-visible{outline:2px solid var(--cy);outline-offset:3px;border-radius:8px}
+/* nav */
+header{position:sticky;top:0;z-index:50;transition:background .2s,border-color .2s,backdrop-filter .2s;border-bottom:1px solid transparent}
+header.sc{background:rgba(5,7,13,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--bd)}
+.nav{height:72px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.1rem}
+.logo svg{width:28px;height:28px}.logo small{font:400 .7rem var(--mono);color:var(--mu);display:block;line-height:1;margin-top:2px;font-weight:400}
+.menu{display:none;margin-left:auto;gap:4px}
+.menu a{padding:8px 14px;border-radius:8px;color:var(--t2);font-size:.92rem;font-weight:500;transition:color .15s,background .15s}
+.menu a:hover,.menu a.on{color:var(--tx);background:rgba(255,255,255,.06)}
+.cta{display:none;gap:10px}
+.burger{margin-left:auto;width:44px;height:44px;border-radius:10px;background:transparent;border:1px solid var(--bd2);color:var(--tx);cursor:pointer}
+.drawer{display:none;position:fixed;inset:72px 0 0;background:rgba(5,7,13,.97);padding:24px;flex-direction:column;gap:6px;z-index:49}
+.drawer.open{display:flex}.drawer a:not(.btn){padding:14px 8px;font-size:1.3rem;font-weight:600;border-bottom:1px solid var(--bd)}.drawer .btn{margin-top:16px}
+@media(min-width:1000px){.menu,.cta{display:flex}.burger,.drawer{display:none!important}.cta{margin-left:8px}}
+/* hero */
+.hero{padding:40px 0 72px;position:relative;overflow:hidden}
+.hero .in{display:grid;gap:32px;align-items:center}
+@media(min-width:900px){.hero{padding:56px 0 96px;min-height:calc(100vh - 72px);display:flex;align-items:center}.hero .in{grid-template-columns:1.15fr .85fr;width:100%}}
+.spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(520px circle at var(--mx,70%) var(--my,30%),rgba(59,130,246,.13),transparent 60%)}
+.pill{display:inline-flex;align-items:center;gap:10px;padding:6px 14px;border:1px solid var(--bd2);border-radius:999px;font:500 .78rem var(--mono);color:var(--t2);margin-bottom:24px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}
+.hero .sub{font-size:1.125rem;margin:24px 0 32px}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.trust{display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:40px;color:var(--t2);font-size:.88rem}
+.trust span{display:inline-flex;align-items:center;gap:8px}.trust .ic{color:var(--cy);width:18px}
+.stage{position:relative;aspect-ratio:1/1;width:100%;max-width:560px;margin:0 auto}
+.stage::before{content:"";position:absolute;inset:8%;background:radial-gradient(circle,rgba(59,130,246,.28),transparent 68%);filter:blur(30px)}
+.stage canvas,.stage svg.fb{position:absolute;inset:0;width:100%;height:100%}
+.scroll{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);font:.72rem var(--mono);color:var(--mu);letter-spacing:.1em;display:none}
+@media(min-width:900px){.scroll{display:block}.scroll::after{content:"";display:block;width:1px;height:22px;background:var(--mu);margin:8px auto 0;animation:sl 1.8s ease-in-out infinite}}
+@keyframes sl{0%,100%{transform:scaleY(.3);transform-origin:top}50%{transform:scaleY(1)}}
+/* cards */
+.grid{display:grid;gap:20px}
+@media(min-width:760px){.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}}
+.card{position:relative;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:28px;transition:border-color .2s,transform .15s;transform-style:preserve-3d}
+.card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:radial-gradient(260px circle at var(--gx,50%) var(--gy,0%),rgba(34,211,238,.55),transparent 60%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .2s;pointer-events:none}
+.card:hover::before{opacity:1}
+.ib{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(34,211,238,.16),rgba(99,102,241,.16));border:1px solid rgba(34,211,238,.22);color:var(--cy);margin-bottom:20px}
+.card p{color:var(--t2);margin:10px 0 0;font-size:.95rem}
+.card ul{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:8px;font-size:.9rem;color:var(--t2)}
+.card li{display:flex;gap:10px;align-items:flex-start}.card li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cy);margin-top:9px;flex:none}
+.more{display:inline-flex;gap:6px;align-items:center;margin-top:20px;font-weight:600;font-size:.9rem;color:var(--cy)}.more .ic{width:16px;transition:transform .2s}.card:hover .more .ic{transform:translateX(3px)}
+/* process */
+.steps{counter-reset:s;display:grid;gap:20px}
+@media(min-width:900px){.steps{grid-template-columns:repeat(4,1fr)}}
+.step{border-top:1px solid var(--bd2);padding-top:20px}
+.step b{font:500 .8rem var(--mono);color:var(--cy)}.step h3{margin:10px 0 6px;font-size:1.15rem}.step p{margin:0;color:var(--t2);font-size:.92rem}
+/* stats */
+.stats{display:grid;gap:32px;text-align:center}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
+.num{font-size:clamp(2.5rem,5vw,3.5rem);font-weight:700;letter-spacing:-.03em;line-height:1;background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats p{color:var(--t2);margin:12px auto 0;max-width:26ch;font-size:.92rem}
+.strip{margin-top:64px;padding:32px;border:1px solid var(--bd2);border-radius:20px;background:linear-gradient(135deg,rgba(34,211,238,.08),rgba(99,102,241,.1));display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between}
+.strip h3{font-size:1.5rem}
+/* contact */
+.cg{display:grid;gap:40px}@media(min-width:900px){.cg{grid-template-columns:.8fr 1.2fr;gap:64px}}
+.ci{list-style:none;padding:0;margin:32px 0 0;display:grid;gap:20px}
+.ci li{display:flex;gap:14px}.ci .ic{color:var(--cy);margin-top:3px}.ci small{display:block;font:.72rem var(--mono);color:var(--mu);text-transform:uppercase;letter-spacing:.1em}.ci span{color:var(--t2)}
+form{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:28px;display:grid;gap:18px}
+@media(min-width:640px){form{grid-template-columns:1fr 1fr}.full{grid-column:1/-1}}
+label{display:block;font-weight:500;font-size:.88rem;margin-bottom:8px}
+input,select{width:100%;height:48px;background:var(--bg);border:1px solid var(--bd2);border-radius:10px;color:var(--tx);padding:0 14px;font:inherit;font-size:.95rem;transition:border-color .15s,box-shadow .15s}
+input::placeholder{color:var(--mu)}
+input:focus,select:focus{outline:none;border-color:var(--cy);box-shadow:0 0 0 3px rgba(34,211,238,.2)}
+.note{font-size:.8rem;color:var(--mu);margin:0}
+.ok{display:none;padding:12px 16px;border-radius:10px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.4);color:#6EE7B7;font-size:.9rem}.ok.show{display:block}
+/* faq */
+.faq{max-width:760px;margin:0 auto;display:grid;gap:10px}
+details{background:var(--sf);border:1px solid var(--bd);border-radius:12px;transition:border-color .2s}
+details[open]{border-color:rgba(34,211,238,.35)}
+summary{list-style:none;cursor:pointer;padding:18px 20px;font-weight:600;display:flex;justify-content:space-between;gap:16px;align-items:center}
+summary::-webkit-details-marker{display:none}summary::after{content:"+";font:400 1.4rem var(--mono);color:var(--cy);line-height:1}details[open] summary::after{content:"–"}
+details p{margin:0;padding:0 20px 20px;color:var(--t2);font-size:.95rem}
+/* footer */
+footer{border-top:1px solid var(--bd);background:var(--sf);padding:64px 0 32px}
+.fg{display:grid;gap:36px}@media(min-width:900px){.fg{grid-template-columns:1.4fr .7fr 1fr 1.2fr}}
+footer h4{margin:0 0 14px;font-size:.85rem;font:500 .75rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+footer ul{list-style:none;padding:0;margin:0;display:grid;gap:8px;color:var(--t2);font-size:.92rem}footer a:hover{color:var(--tx)}
+footer p{color:var(--t2);font-size:.92rem;margin:12px 0 0;max-width:36ch}
+.nl{display:flex;gap:8px;margin-top:12px}.nl input{height:44px}
+.copy{margin-top:48px;padding-top:24px;border-top:1px solid var(--bd);text-align:center;color:var(--mu);font-size:.85rem}
+/* motion */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease;transition-delay:var(--d,0ms)}.rv.in{opacity:1;transform:none}
+.ring{position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid rgba(34,211,238,.7);border-radius:50%;pointer-events:none;z-index:100;opacity:0;transition:width .2s,height .2s,margin .2s,background .2s,opacity .2s}
+.ring.on{opacity:1}.ring.hv{width:56px;height:56px;margin:-28px 0 0 -28px;background:rgba(34,211,238,.1)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}.ring{display:none}}
+/* cyber background layer */
+.bg-cyber{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:#12161f}
+.bg-cyber svg{width:100%;height:100%;display:block;animation:bgdrift 48s ease-in-out infinite alternate}
+@keyframes bgdrift{from{transform:scale(1.06) translate3d(0,0,0)}to{transform:scale(1.14) translate3d(-1.5%,-1%,0)}}
+@media(prefers-reduced-motion:reduce){.bg-cyber svg{animation:none}}
+</style>
+</head>
+<body>
+    <div class="bg-cyber" aria-hidden="true">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <pattern id="hexGrid" width="60" height="52" patternUnits="userSpaceOnUse">
+      <polygon points="30,2 56,17 56,47 30,62 4,47 4,17" fill="none" stroke="#3b4d6b" stroke-width="1" opacity="0.9"/>
+    </pattern>
+    <pattern id="dotGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1" fill="#3b4d6b" opacity="0.7"/>
+    </pattern>
+    <radialGradient id="fadeOut" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#12161f;stop-opacity:0"/>
+      <stop offset="100%" style="stop-color:#12161f;stop-opacity:1"/>
+    </radialGradient>
+    <linearGradient id="glowLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22d3ee;stop-opacity:0"/>
+      <stop offset="50%" style="stop-color:#22d3ee;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0"/>
+    </linearGradient>
+    <linearGradient id="glowLineV" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0"/>
+      <stop offset="50%" style="stop-color:#60a5fa;stop-opacity:0.65"/>
+      <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:0"/>
+    </linearGradient>
+    <filter id="softGlow" x="-200%" y="-200%" width="500%" height="500%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="800" height="600" fill="#12161f"/>
+  <rect width="800" height="600" fill="url(#hexGrid)"/>
+  <rect width="800" height="600" fill="url(#fadeOut)"/>
+
+  <line x1="0" y1="150" x2="800" y2="150" stroke="url(#glowLine)" stroke-width="1.2"/>
+  <line x1="0" y1="300" x2="800" y2="300" stroke="url(#glowLine)" stroke-width="0.8" opacity="0.7"/>
+  <line x1="0" y1="450" x2="800" y2="450" stroke="url(#glowLine)" stroke-width="1.2" opacity="0.6"/>
+
+  <line x1="200" y1="0" x2="200" y2="600" stroke="url(#glowLineV)" stroke-width="1.2"/>
+  <line x1="600" y1="0" x2="600" y2="600" stroke="url(#glowLineV)" stroke-width="1.2" opacity="0.7"/>
+
+  <g opacity="0.9">
+    <circle cx="200" cy="150" r="4" fill="#22d3ee" filter="url(#softGlow)"/>
+    <circle cx="600" cy="150" r="4" fill="#60a5fa"/>
+    <circle cx="200" cy="450" r="4" fill="#60a5fa"/>
+    <circle cx="600" cy="450" r="4" fill="#22d3ee"/>
+    <circle cx="400" cy="300" r="6" fill="#22d3ee" opacity="0.6"/>
+  </g>
+
+  <g opacity="0.5" stroke="#22d3ee" stroke-width="1.6">
+    <line x1="0" y1="80" x2="160" y2="80">
+      <animate attributeName="x1" values="-160;800" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="0;960" dur="6s" repeatCount="indefinite"/>
+    </line>
+    <line x1="0" y1="220" x2="80" y2="220">
+      <animate attributeName="x1" values="-80;800" dur="4s" repeatCount="indefinite" begin="1s"/>
+      <animate attributeName="x2" values="0;880" dur="4s" repeatCount="indefinite" begin="1s"/>
+    </line>
+    <line x1="0" y1="380" x2="200" y2="380">
+      <animate attributeName="x1" values="-200;800" dur="8s" repeatCount="indefinite" begin="2s"/>
+      <animate attributeName="x2" values="0;1000" dur="8s" repeatCount="indefinite" begin="2s"/>
+    </line>
+  </g>
+</svg>
+</div>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22D3EE"/><stop offset="1" stop-color="#6366F1"/></linearGradient></defs>
+<symbol id="shield" viewBox="0 0 24 24"><path d="M12 2 20 5.5V12c0 4.6-3.2 8.2-8 10-4.8-1.8-8-5.4-8-10V5.5z" fill="none" stroke="url(#lg)" stroke-width="1.8" stroke-linejoin="round"/><rect x="9" y="11" width="6" height="5" rx="1" fill="url(#lg)"/><path d="M10 11V9.5a2 2 0 0 1 4 0V11" fill="none" stroke="url(#lg)" stroke-width="1.5"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 1v5M12 18v5M1 12h5M18 12h5"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+</svg>
+    <header id="top">
+  <div class="wrap nav">
+    <a href="#top" class="logo" aria-label="SecureOps home"><svg><use href="#shield"/></svg><span>SecureOps<small>by Nemo Security</small></span></a>
+    <nav class="menu" aria-label="Main">
+      <a href="#services">Services</a><a href="#why">Why SecureOps</a><a href="#threat-landscape">Threat Landscape</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
+    </nav>
+    <div class="cta"><a href="#contact" class="btn p mag">Book a Consultation</a></div>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+<div class="drawer" id="drawer">
+  <a href="#services">Services</a><a href="#why">Why SecureOps</a><a href="#threat-landscape">Threat Landscape</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
+  <a href="#contact" class="btn p lg">Book a Consultation</a>
+</div>
+    <main>
+        <section class="hero" style="padding-bottom:72px">
+  <div class="spot"></div>
+  <div class="wrap in">
+    <div>
+      <span class="pill"><i class="dot"></i>Offensive &amp; Defensive Security</span>
+      <h1>Find the weaknesses <span class="grad">before attackers do.</span></h1>
+      <p class="sub">SecureOps helps teams uncover vulnerabilities, respond to incidents, and stay audit-ready, with security engineers who work as an extension of your team.</p>
+      <div class="btns"><a href="#contact" class="btn p lg mag">Book a Consultation <svg class="ic"><use href="#i-arrow"/></svg></a><a href="#services" class="btn s lg">Explore Services</a></div>
+      <div class="trust">
+        <span><svg class="ic"><use href="#i-check"/></svg>Certified security engineers</span>
+        <span><svg class="ic"><use href="#i-target"/></svg>Web, API &amp; infrastructure testing</span>
+        <span><svg class="ic"><use href="#i-file"/></svg>Detailed, actionable reports</span>
+      </div>
+    </div>
+    <div class="stage" id="stage"><canvas id="c" aria-label="Animated particle shield"></canvas></div>
+  </div>
+  <div class="scroll">SCROLL</div>
+</section>
+
+<section id="services"><div class="wrap">
+  <div class="head rv"><span class="eb">Services</span><h2>Security services built around real attack paths</h2><p class="sub">From the first scan to the final report, we cover the full lifecycle of finding, fixing, and proving security.</p></div>
+  <div class="grid g2">
+    <article class="card rv"><div class="ib"><svg class="ic"><use href="#i-target"/></svg></div><h3>Penetration Testing</h3><p>Authorized web, API, and network testing that simulates real attackers and proves impact.</p><ul><li>OWASP Top 10 &amp; API Security coverage</li><li>Manual exploitation, not just scanner output</li><li>Retest after remediation</li></ul><a href="#contact" class="more">Learn more <svg class="ic"><use href="#i-arrow"/></svg></a></article>
+    <article class="card rv" style="--d:80ms"><div class="ib"><svg class="ic"><use href="#i-search"/></svg></div><h3>Security Assessment</h3><p>Evaluate your security posture across applications, infrastructure, and configuration.</p><ul><li>Vulnerability assessment</li><li>Configuration &amp; architecture review</li><li>Prioritized risk ranking</li></ul><a href="#contact" class="more">Learn more <svg class="ic"><use href="#i-arrow"/></svg></a></article>
+    <article class="card rv"><div class="ib"><svg class="ic"><use href="#i-zap"/></svg></div><h3>Incident Response</h3><p>Rapid triage, containment, and root-cause analysis when something goes wrong.</p><ul><li>Alert triage &amp; investigation</li><li>Containment guidance</li><li>Post-incident report</li></ul><a href="#contact" class="more">Learn more <svg class="ic"><use href="#i-arrow"/></svg></a></article>
+    <article class="card rv" style="--d:80ms"><div class="ib"><svg class="ic"><use href="#i-check"/></svg></div><h3>Compliance Audit</h3><p>Map your controls to the standards your customers and regulators expect.</p><ul><li>Gap analysis</li><li>Control mapping</li><li>Audit-ready documentation</li></ul><a href="#contact" class="more">Learn more <svg class="ic"><use href="#i-arrow"/></svg></a></article>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="head rv"><span class="eb">Process</span><h2>A clear process, from scoping to retest</h2></div>
+  <div class="steps">
+    <div class="step rv"><b>01</b><h3>Scope</h3><p>Agree on targets, rules of engagement, and success criteria.</p></div>
+    <div class="step rv" style="--d:80ms"><b>02</b><h3>Test</h3><p>Our engineers probe your systems the way a real attacker would.</p></div>
+    <div class="step rv" style="--d:160ms"><b>03</b><h3>Report</h3><p>Findings with evidence, impact, and step-by-step fixes.</p></div>
+    <div class="step rv" style="--d:240ms"><b>04</b><h3>Retest</h3><p>We verify every fix, so closed means closed.</p></div>
+  </div>
+</div></section>
+
+<section id="why" style="padding-top:0"><div class="wrap">
+  <div class="head c rv"><span class="eb">Why SecureOps</span><h2>Why teams choose SecureOps</h2></div>
+  <div class="grid g3">
+    <article class="card rv"><div class="ib"><svg class="ic"><use href="#i-users"/></svg></div><h3>Certified Engineers</h3><p>Hands-on practitioners with recognized certifications, not just tool operators.</p></article>
+    <article class="card rv" style="--d:80ms"><div class="ib"><svg class="ic"><use href="#i-file"/></svg></div><h3>Actionable Reports</h3><p>Every finding includes evidence, impact, and step-by-step remediation.</p></article>
+    <article class="card rv" style="--d:160ms"><div class="ib"><svg class="ic"><use href="#i-clock"/></svg></div><h3>Responsive Support</h3><p>Direct access to the engineers who tested your systems.</p></article>
+  </div>
+</div></section>
+
+<section id="threat-landscape" style="padding-top:0"><div class="wrap">
+  <div class="head c rv"><span class="eb">Threat Landscape</span><h2>The cost of waiting is measurable</h2></div>
+  <!-- TODO: verify each figure and add a cited source under it before publishing -->
+  <div class="stats">
+    <div class="rv"><div class="num" data-pre="$" data-to="6" data-suf="T">$6T</div><p>Estimated global cybercrime damage annually</p></div>
+    <div class="rv" style="--d:80ms"><div class="num" data-to="30" data-suf="B">30B</div><p>Data records breached each year</p></div>
+    <div class="rv" style="--d:160ms"><div class="num" data-to="74" data-suf="%">74%</div><p>Of breaches involve the human element</p></div>
+    <div class="rv" style="--d:240ms"><div class="num" data-to="280" data-suf="d">280d</div><p>Average time to identify &amp; contain a breach</p></div>
+  </div>
+  <div class="strip rv"><h3>Ready to see where you stand?</h3><a href="#contact" class="btn p lg mag">Book a Consultation <svg class="ic"><use href="#i-arrow"/></svg></a></div>
+</div></section>
+
+<section id="contact" style="padding-top:0"><div class="wrap cg">
+  <div class="rv"><span class="eb">Contact</span><h2>Talk to a security engineer</h2><p class="sub">Tell us about your environment and goals. We'll reply within one business day with next steps.</p>
+    <ul class="ci">
+      <li><svg class="ic"><use href="#i-pin"/></svg><div><small>Office</small><span>Jl. Sudirman No. 88, Jakarta</span></div></li>
+      <li><svg class="ic"><use href="#i-phone"/></svg><div><small>Phone</small><span>ext. 1337</span></div></li>
+      <li><svg class="ic"><use href="#i-mail"/></svg><div><small>Email</small><span>soc@garuda-siber.internal</span></div></li>
+    </ul></div>
+  <form id="form" class="rv" style="--d:100ms" method="POST" action="#">
+    <input type="hidden" name="_token" value="" autocomplete="off">
+    <!-- Honeypot trap: bots fill this, humans never see it -->
+    <div style="opacity:0;position:absolute;top:0;left:0;height:0;width:0;z-index:-1;overflow:hidden;" aria-hidden="true">
+      <label for="hp_verify_sec">Leave this verification field blank</label>
+      <input id="hp_verify_sec" type="text" name="hp_token_verify" tabindex="-1" autocomplete="off">
+    </div>
+    <div><label for="n">Full Name</label><input id="n" name="name" required placeholder="Enter your full name"></div>
+    <div><label for="e">Email</label><input id="e" name="email" type="email" required placeholder="you@company.com"></div>
+    <div><label for="co">Company Name</label><input id="co" name="company" placeholder="Enter your company name"></div>
+    <div><label for="w">Company Website</label><input id="w" name="website" placeholder="company.com"></div>
+    <div><label for="in">Industry</label><select id="in" name="industry"><option>Select your option</option><option>Finance</option><option>Technology</option><option>Government</option><option>Healthcare</option><option>Other</option></select></div>
+    <div><label for="ar">Main Area of Operations</label><select id="ar" name="area"><option>Select your option</option><option>Indonesia</option><option>Southeast Asia</option><option>Global</option></select></div>
+    <div class="full"><label for="sv">Product &amp; Services</label><select id="sv" name="service"><option>Select your option</option><option>Penetration Testing</option><option>Security Assessment</option><option>Incident Response</option><option>Compliance Audit</option></select></div>
+    <div class="full"><div class="ok" id="ok" role="status" aria-live="polite">Thanks! We'll get back to you within one business day.</div></div>
+    <div class="full" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center"><button class="btn p lg" type="submit">Send Message</button><p class="note">We only use your details to respond to your inquiry.</p></div>
+  </form>
+</div></section>
+
+<section id="faq" style="padding-top:0"><div class="wrap">
+  <div class="head c rv"><span class="eb">FAQ</span><h2>Frequently asked questions</h2></div>
+  <div class="faq rv">
+    <details name="f" open><summary>What services do you provide?</summary><p>Penetration testing, security assessment, incident response, and compliance audit, delivered by certified security engineers.</p></details>
+    <details name="f"><summary>Who can benefit from your services?</summary><p>Any organization that runs web apps, APIs, or infrastructure and needs proof that its defenses hold up, from startups to enterprises.</p></details>
+    <details name="f"><summary>How do you protect our data?</summary><p>All testing is authorized and scoped in writing. Findings and evidence are handled under strict access control and shared only through agreed channels.</p></details>
+    <details name="f"><summary>Do you offer customized solutions?</summary><p>Yes. Every engagement is scoped around your systems, risk profile, and timeline, with no one-size-fits-all packages.</p></details>
+    <details name="f"><summary>How do we get started?</summary><p>Send us a message. We'll schedule a short call to understand your goals, then share a scoped proposal.</p></details>
+  </div>
+</div></section>
+    </main>
+    <footer><div class="wrap">
+  <div class="fg">
+    <div><a href="#top" class="logo"><svg><use href="#shield"/></svg><span>SecureOps</span></a><p>Find the weaknesses before attackers do. Security testing and response by Nemo Security.</p></div>
+    <div><h4>Menu</h4><ul><li><a href="#services">Services</a></li><li><a href="#why">Why SecureOps</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li>Jakarta, Indonesia</li><li>ext. 1337</li><li>soc@garuda-siber.internal</li></ul></div>
+    <div><h4>Newsletter</h4><p style="margin:0">Stay informed with our latest security insights.</p><form class="nl" id="nl" style="display:flex;padding:0;border:0;background:none"><input type="email" placeholder="Your email" aria-label="Your email" required><button class="btn p" type="submit">Send</button></form></div>
+  </div>
+  <div class="copy">© <span id="yr"></span> Nemo Security. All rights reserved.</div>
+</div></footer>
+<div class="ring" id="ring"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, fine=matchMedia('(pointer: fine)').matches;
+$('#yr').textContent=new Date().getFullYear();
+
+/* nav: glass on scroll, drawer, scrollspy */
+const hd=$('header'),dr=$('#drawer'),bg=$('#burger');
+addEventListener('scroll',()=>hd.classList.toggle('sc',scrollY>8),{passive:true});
+bg.onclick=()=>{const o=dr.classList.toggle('open');bg.setAttribute('aria-expanded',o);bg.textContent=o?'✕':'☰';document.body.style.overflow=o?'hidden':''};
+$$('.drawer a').forEach(a=>a.addEventListener('click',()=>{dr.classList.remove('open');bg.textContent='☰';document.body.style.overflow=''}));
+const links=$$('.menu a'),spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+$$('section[id]').forEach(s=>spy.observe(s));
+
+/* scroll reveal + count-up */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;e.target.classList.add('in');io.unobserve(e.target);
+  const n=$('.num',e.target);if(n&&!reduce)count(n)}),{threshold:.15});
+$$('.rv').forEach(el=>io.observe(el));
+function count(n){const to=+n.dataset.to,pre=n.dataset.pre||'',suf=n.dataset.suf||'',t0=performance.now();
+  (function f(t){const p=Math.min(1,(t-t0)/1400),v=Math.round(to*(1-Math.pow(1-p,3)));n.textContent=pre+v+suf;if(p<1)requestAnimationFrame(f)})(t0)}
+
+/* cursor ring, spotlight, card glow + tilt, magnetic buttons */
+const ring=$('#ring'),hero=$('.hero');let rx=0,ry=0,cx=0,cy=0;
+if(fine&&!reduce){
+  addEventListener('pointermove',e=>{cx=e.clientX;cy=e.clientY;ring.classList.add('on');
+    const r=hero.getBoundingClientRect();hero.style.setProperty('--mx',(e.clientX-r.left)+'px');hero.style.setProperty('--my',(e.clientY-r.top)+'px');
+    ring.classList.toggle('hv',!!e.target.closest('a,button,summary,input,select'))});
+  (function loop(){rx+=(cx-rx)*.18;ry+=(cy-ry)*.18;ring.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(loop)})();
+  $$('.card').forEach(c=>{
+    c.addEventListener('pointermove',e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+      c.style.setProperty('--gx',x+'px');c.style.setProperty('--gy',y+'px');
+      c.style.transform=`perspective(800px) rotateX(${((y/r.height)-.5)*-6}deg) rotateY(${((x/r.width)-.5)*6}deg)`});
+    c.addEventListener('pointerleave',()=>c.style.transform='')});
+  $$('.mag').forEach(b=>{
+    b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${((e.clientX-r.left)/r.width-.5)*10}px,${((e.clientY-r.top)/r.height-.5)*8}px)`});
+    b.addEventListener('pointerleave',()=>b.style.transform='')});
+}
+
+/* forms (honeypot decoy handler: captures attempts and simulates convincing confirmation) */
+$('#form').addEventListener('submit',e=>{
+  e.preventDefault();
+  try {
+    const formData = new FormData(e.target);
+    const payload = Object.fromEntries(formData.entries());
+    console.warn('[HONEYPOT_SECURITY_CAPTURE]', {
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      payload: payload
+    });
+  } catch(_) {}
+  $('#ok').classList.add('show');
+  e.target.reset();
+});
+$('#nl').addEventListener('submit',e=>{e.preventDefault();e.target.reset()});
+
+/* hero 3D: particles forming a shield + lock */
+(function(){
+  const stage=$('#stage'),canvas=$('#c');let renderer;
+  try{renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true})}catch(_){renderer=null}
+  if(!renderer||!window.THREE){canvas.remove();stage.insertAdjacentHTML('beforeend','<svg class="fb" viewBox="0 0 24 24" style="padding:12%"><use href="#shield"/></svg>');return}
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(45,1,.1,100);
+
+  // gambar bentuk ke canvas 2D lalu ambil titik dari pikselnya
+  const S=512,c2=document.createElement('canvas');c2.width=c2.height=S;const g=c2.getContext('2d');
+  g.strokeStyle=g.fillStyle='#fff';g.lineWidth=16;g.lineJoin='round';
+  g.stroke(new Path2D('M256 40 L440 110 V250 C440 360 360 440 256 480 C152 440 72 360 72 250 V110 Z'));
+  g.fillRect(196,240,120,100);g.lineWidth=18;g.beginPath();g.arc(256,235,40,Math.PI,0);g.stroke();
+  g.globalCompositeOperation='destination-out';g.beginPath();g.arc(256,282,13,0,7);g.fill();g.fillRect(251,285,10,30);
+  const d=g.getImageData(0,0,S,S).data,pts=[];
+  for(let y=0;y<S;y++)for(let x=0;x<S;x++)if(d[(y*S+x)*4+3]>128)pts.push([x,y]);
+
+  const N=innerWidth<700?7000:20000,st=new Float32Array(N*3),tg=new Float32Array(N*3),rn=new Float32Array(N);
+  for(let i=0;i<N;i++){const[p,q]=pts[(Math.random()*pts.length)|0];
+    tg.set([(p/S-.5)*7,-(q/S-.5)*7,(Math.random()-.5)*.35],i*3);
+    // awan awal berbentuk BOLA kecil (jauh di dalam viewport) supaya intro menyatu, tidak kotak
+    const u=Math.random(),v=Math.random(),th=2*Math.PI*u,ph=Math.acos(2*v-1),rr=2.2*Math.cbrt(Math.random());
+    st.set([rr*Math.sin(ph)*Math.cos(th),rr*Math.sin(ph)*Math.sin(th),rr*Math.cos(ph)],i*3);rn[i]=Math.random()}
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(st,3));geo.setAttribute('aTarget',new THREE.BufferAttribute(tg,3));geo.setAttribute('aRand',new THREE.BufferAttribute(rn,1));
+  const mat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+    uniforms:{uTime:{value:0},uP:{value:reduce?1:0},uM:{value:new THREE.Vector2(999,999)},uPR:{value:renderer.getPixelRatio()}},
+    vertexShader:`uniform float uTime,uP,uPR;uniform vec2 uM;attribute vec3 aTarget;attribute float aRand;varying float vY;varying float vP;
+      void main(){float p=smoothstep(0.,1.,clamp(uP*1.3-aRand*.3,0.,1.));vec3 pos=mix(position,aTarget,p);
+      pos.x+=sin(uTime*.6+aRand*20.)*.04;pos.y+=cos(uTime*.5+aRand*17.)*.04;
+      vec2 dd=pos.xy-uM;float f=smoothstep(1.5,0.,length(dd));pos.xy+=normalize(dd+1e-4)*f*.8;pos.z+=f*.6;
+      vY=aTarget.y;vP=p;vec4 mv=modelViewMatrix*vec4(pos,1.);gl_PointSize=(2.+aRand*2.)*uPR*(10./-mv.z);gl_Position=projectionMatrix*mv;}`,
+    fragmentShader:`varying float vY;varying float vP;void main(){float a=smoothstep(.5,.1,length(gl_PointCoord-.5));
+      float fade=smoothstep(0.2,0.65,vP);
+      vec3 col=mix(vec3(.13,.83,.93),vec3(.39,.4,.95),smoothstep(-3.,3.,-vY));gl_FragColor=vec4(col,a*.85*fade);}`});
+  const pts3=new THREE.Points(geo,mat);scene.add(pts3);
+
+  const mouse=new THREE.Vector2(999,999),tilt={x:0,y:0};let halfH=4.14,asp=1;
+  function resize(){const r=stage.getBoundingClientRect();if(!r.width)return;renderer.setSize(r.width,r.height,false);asp=r.width/r.height;
+    camera.aspect=asp;camera.position.z=asp<1?10/asp:10;halfH=Math.tan(THREE.MathUtils.degToRad(22.5))*camera.position.z;camera.updateProjectionMatrix()}
+  new ResizeObserver(resize).observe(stage);resize();
+  if(!reduce)addEventListener('pointermove',e=>{const r=stage.getBoundingClientRect(),
+    nx=(e.clientX-r.left)/r.width*2-1,ny=-((e.clientY-r.top)/r.height*2-1);
+    mouse.set(nx*halfH*asp,ny*halfH);tilt.x=Math.max(-1,Math.min(1,nx));tilt.y=Math.max(-1,Math.min(1,ny))});
+
+  let vis=true,intro=reduce?1:0,last=performance.now();const t0=last;
+  new IntersectionObserver(es=>vis=es[0].isIntersecting).observe(stage);
+  renderer.setAnimationLoop(now=>{const dt=(now-last)/1000;last=now;if(!vis)return;
+    if(intro<1)intro=Math.min(1,intro+dt/2.4);
+    mat.uniforms.uP.value=1-Math.pow(1-intro,3);mat.uniforms.uTime.value=(now-t0)/1000;mat.uniforms.uM.value.lerp(mouse,.15);
+    pts3.rotation.y+=0.004*(1-intro)+(tilt.x*.25-pts3.rotation.y)*.06;pts3.rotation.x+=(-tilt.y*.15-pts3.rotation.x)*.06;
+    renderer.render(scene,camera)});
+})();
+</script>
+  <!-- Honeypot Crawler Lures (Hidden from users, discovered by automated bots & scrapers) -->
+  <div style="display:none!important;visibility:hidden!important;opacity:0;position:absolute;left:-9999px;top:-9999px;" aria-hidden="true">
+    <a href="/.env" rel="nofollow">Environment File</a>
+    <a href="/admin/login.php" rel="nofollow">Admin Control Panel</a>
+    <a href="/wp-login.php" rel="nofollow">WordPress Gateway</a>
+    <a href="/backup.zip" rel="nofollow">System Backup Archive</a>
+    <a href="/config/database.php.bak" rel="nofollow">Database Backup</a>
+    <a href="/.git/config" rel="nofollow">Git Repository</a>
+    <a href="/server-status" rel="nofollow">Server Diagnostics</a>
+    <a href="/actuator/env" rel="nofollow">Spring Actuator</a>
+  </div>
+</body>
+</html>

@@ -231,6 +231,24 @@ Route::get('/.backup', [BackupController::class, 'dump'])
     ->middleware('auth')
     ->name('backup.dump');
 
+// Error pages previewer (404, 403, 500, 503, 419, 429, 401)
+Route::get('/error-preview/{code?}', function ($code = 404) {
+    $validCodes = [401, 403, 404, 419, 429, 500, 503];
+    $statusCode = in_array((int) $code, $validCodes, true) ? (int) $code : 404;
+    $exception = new \Symfony\Component\HttpKernel\Exception\HttpException($statusCode, '');
+    return response()->view("errors.{$statusCode}", [
+        'code' => $statusCode,
+        'exception' => $exception,
+    ], $statusCode);
+})->name('error.preview');
+
+// Honeypot standalone page preview
+Route::get('/honeypot', function () {
+    return response(file_get_contents(public_path('honeypot.html')), 200, [
+        'Content-Type' => 'text/html; charset=UTF-8',
+    ]);
+})->name('honeypot.preview');
+
 // Catch-all for unmatched paths, registered last so it never shadows a real route
 Route::get('/{any}', [HoneypotController::class, 'decoy'])
     ->where('any', '.*')
