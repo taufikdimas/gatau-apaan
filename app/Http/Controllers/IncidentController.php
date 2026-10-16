@@ -74,8 +74,33 @@ class IncidentController extends Controller
             ->with('success', 'Insiden berhasil dibuat.');
     }
 
+    /**
+     * Otorisasi hak akses insiden (Anti-IDOR).
+     * Hanya admin, analis yang ditugaskan (assigned_to atau assignees), atau pelapor yang boleh mengakses.
+     */
+    private function authorizeIncidentAccess(Incident $incident): void
+    {
+        $user = auth()->user();
+
+        // 1. Administrator memiliki hak akses penuh ke seluruh tiket
+        if ($user && $user->isAdmin()) {
+            return;
+        }
+
+        // 2. Analis yang ditugaskan (PIC) atau pelapor tiket
+        $isAssignee = $incident->assigned_to === $user->id
+            || $incident->assignees()->where('users.id', $user->id)->exists();
+        $isReporter = $incident->reported_by === $user->id;
+
+        if (! $isAssignee && ! $isReporter) {
+            abort(403, 'Akses Ditolak: Anda tidak memiliki hak akses untuk tiket insiden ini.');
+        }
+    }
+
     public function show(Incident $incident)
     {
+        $this->authorizeIncidentAccess($incident);
+
         $incident->load(['asset', 'assignees', 'assignedTo', 'reportedBy', 'notes.author']);
 
         return view('incidents.show', [
@@ -87,6 +112,8 @@ class IncidentController extends Controller
 
     public function edit(Incident $incident)
     {
+        $this->authorizeIncidentAccess($incident);
+
         $incident->load('assignees');
 
         return view('incidents.edit', [
@@ -98,6 +125,8 @@ class IncidentController extends Controller
 
     public function update(Request $request, Incident $incident)
     {
+        $this->authorizeIncidentAccess($incident);
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -128,6 +157,8 @@ class IncidentController extends Controller
 
     public function updateStatus(Request $request, Incident $incident)
     {
+        $this->authorizeIncidentAccess($incident);
+
         $validated = $request->validate([
             'status' => 'required|in:open,in_progress,resolved',
         ]);
@@ -144,6 +175,8 @@ class IncidentController extends Controller
 
     public function storeNote(Request $request, Incident $incident)
     {
+        $this->authorizeIncidentAccess($incident);
+
         $validated = $request->validate([
             'note' => 'required|string|max:2000',
         ]);
@@ -158,6 +191,8 @@ class IncidentController extends Controller
 
     public function assign(Request $request, Incident $incident)
     {
+        $this->authorizeIncidentAccess($incident);
+
         $validated = $request->validate([
             'assigned_to' => 'nullable',
             'assigned_to.*' => 'exists:users,id',
@@ -186,6 +221,8 @@ class IncidentController extends Controller
 
     public function destroy(Incident $incident)
     {
+        abort_if(! auth()->user()->isAdmin(), 403, 'Hanya administrator yang berhak menghapus insiden.');
+
         $incident->delete();
 
         return redirect()->route('incidents.index')

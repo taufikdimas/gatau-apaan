@@ -536,106 +536,7 @@
         box-shadow: 0 0 15px rgba(139, 92, 246, 0.35);
         transform: translateY(-1px);
     }
-
-    /* Diagnostics Bar */
-    .diag-bar {
-        margin-top: 1.5rem;
-        width: 100%;
-        background: rgba(10, 15, 26, 0.6);
-        border: 1px solid var(--border-subtle);
-        border-radius: 12px;
-        padding: 1rem 1.25rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 1rem;
-        font-family: var(--font-mono);
-        font-size: 0.8rem;
-        color: var(--text-dim);
-    }
-
-    .diag-items {
-        display: flex;
-        align-items: center;
-        gap: 1.25rem;
-        flex-wrap: wrap;
-    }
-
-    .diag-item span {
-        color: var(--text-muted);
-        font-weight: 500;
-    }
-
-    .copy-diag-btn {
-        background: transparent;
-        border: none;
-        color: var(--theme-color);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        font-family: var(--font-mono);
-        font-size: 0.8rem;
-        padding: 0.3rem 0.6rem;
-        border-radius: 6px;
-        transition: background 0.2s;
-    }
-
-    .copy-diag-btn:hover {
-        background: rgba(var(--theme-color-rgb), 0.15);
-    }
-
-    /* Error Switcher / Test Bar */
-    .error-switcher {
-        position: relative;
-        z-index: 20;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        padding: 1rem 1.5rem 1.75rem;
-        background: rgba(6, 8, 14, 0.7);
-        border-top: 1px solid var(--border-subtle);
-    }
-
-    .switcher-label {
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--text-dim);
-        margin-right: 0.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.35rem;
-    }
-
-    .switch-chip {
-        padding: 0.25rem 0.65rem;
-        border-radius: 6px;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        text-decoration: none;
-        color: var(--text-muted);
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid var(--border-subtle);
-        transition: all 0.2s ease;
-    }
-
-    .switch-chip:hover {
-        color: #fff;
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .switch-chip.active {
-        background: rgba(var(--theme-color-rgb), 0.2);
-        color: var(--theme-color);
-        border-color: var(--theme-color);
-        font-weight: 700;
-    }
-
-    /* Drawer / Modals: Mini Game & Interactive Terminal */
+    /* Drawer / Modals: Mini Game */
     .cyber-modal-overlay {
         position: fixed;
         inset: 0;
@@ -1023,55 +924,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Diagnostics Information Bar -->
-        <div class="diag-bar">
-            <div class="diag-items">
-                <div class="diag-item">URL: <span id="diagUrl">{{ request()->fullUrl() }}</span></div>
-                <div class="diag-item">WAKTU: <span id="diagTime">{{ now()->format('Y-m-d H:i:s') }} UTC</span></div>
-                <div class="diag-item">PROTOKOL: <span>HTTP/2.0 TLS_AES</span></div>
-            </div>
-            <button class="copy-diag-btn" onclick="copyDiagnosticReport()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                </svg>
-                <span>Salin Info Diagnostik</span>
-            </button>
-        </div>
     </main>
-
-    <!-- Error Switcher / Preview Bar (Sangat berguna saat pengujian & demonstrasi) -->
-    <nav class="error-switcher" aria-label="Error Code Previewer">
-        <span class="switcher-label">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10" />
-                <path d="m10 15 5-3-5-3v6z" />
-            </svg>
-            <span>Uji Status Error:</span>
-        </span>
-        <a href="{{ route('error.preview', ['code' => 404]) }}"
-            class="switch-chip @if(request()->is('*/404') || (isset($code) && $code == 404)) active @endif">404 (Not
-            Found)</a>
-        <a href="{{ route('error.preview', ['code' => 403]) }}"
-            class="switch-chip @if(request()->is('*/403') || (isset($code) && $code == 403)) active @endif">403
-            (Forbidden)</a>
-        <a href="{{ route('error.preview', ['code' => 500]) }}"
-            class="switch-chip @if(request()->is('*/500') || (isset($code) && $code == 500)) active @endif">500 (Server
-            Error)</a>
-        <a href="{{ route('error.preview', ['code' => 503]) }}"
-            class="switch-chip @if(request()->is('*/503') || (isset($code) && $code == 503)) active @endif">503
-            (Maintenance)</a>
-        <a href="{{ route('error.preview', ['code' => 419]) }}"
-            class="switch-chip @if(request()->is('*/419') || (isset($code) && $code == 419)) active @endif">419 (Page
-            Expired)</a>
-        <a href="{{ route('error.preview', ['code' => 429]) }}"
-            class="switch-chip @if(request()->is('*/429') || (isset($code) && $code == 429)) active @endif">429 (Too
-            Many Requests)</a>
-        <a href="{{ route('error.preview', ['code' => 401]) }}"
-            class="switch-chip @if(request()->is('*/401') || (isset($code) && $code == 401)) active @endif">401
-            (Unauthorized)</a>
-    </nav>
 
 
 
@@ -1343,21 +1196,6 @@
         }, 3000);
     }
 
-    function copyDiagnosticReport() {
-        playBeep(600, 'sine', 0.1);
-        const inc = document.getElementById('incidentHash').innerText;
-        const url = window.location.href;
-        const time = new Date().toISOString();
-        const report =
-            `[NEMO_SECOPS_ERROR_REPORT]\nIncident ID: ${inc}\nURL: ${url}\nTimestamp: ${time}\nUser-Agent: ${navigator.userAgent}\nStatus: @yield('code', '404') - @yield('status_badge', 'ANOMALY')`;
-
-        navigator.clipboard.writeText(report).then(() => {
-            showToast('Laporan diagnostik berhasil disalin ke clipboard!');
-            playSuccess();
-        }).catch(() => {
-            showToast('Gagal menyalin otomatis, silakan salin manual.');
-        });
-    }
 
 
 

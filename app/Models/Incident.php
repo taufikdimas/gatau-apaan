@@ -28,6 +28,14 @@ class Incident extends Model
         ];
     }
 
+    /**
+     * Samarkan ID database di URL dengan ticket_number (misal: /incidents/INC-2026-0001)
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'ticket_number';
+    }
+
     public function asset()
     {
         return $this->belongsTo(Asset::class);
